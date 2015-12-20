@@ -18,9 +18,9 @@ development:
   encoding: unicode
   database: ruby_rails_hw1_v3_development
   pool:     5
-  username: ruby_rails_hw1_v3
-  password:
-  template: template0
+  username: jaros
+  password: aaa
+  template: template1
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
