@@ -1,5 +1,8 @@
 h1 Listing posts
 
+- @tags.each do |tag|
+  = link_to "#{tag.name}", post_filter_path(tag.name)
+
 table
   thead
     tr
@@ -9,16 +12,14 @@ table
       th Tags
       th
       th
-      th
 
   tbody
     - @posts.each do |post|
-      tr
-        td = post.author
-        td = post.title
-        td = post.body
-        td = post.tag_strings.map {|c| c.name}.join(', ')
-        td = link_to 'Show', post
+      tr id = "post-row-#{post.id}"
+        td.name class="post-author" = post.author
+        td.title class="post-title" = post.title
+        td.body class="post-body" = post.body
+        td.tags class="post-tags" = post.tag_strings.map {|c| c.name}.join(', ')
         td = link_to 'Edit', edit_post_path(post)
         td = link_to 'Destroy', post, data: {:confirm => 'Are you sure?'}, :method => :delete
 
