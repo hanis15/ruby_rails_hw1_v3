@@ -11,11 +11,11 @@
     = f.text_field :author, :id => 'post_author'
   .field
     = f.label :title
-    = f.text_field :title
+    = f.text_field :title, :id => 'post_title'
   .field
     = f.label :tag_strings
-    = f.text_field :tag_strings, :value => @post.tag_strings.map {|c| c.name}.join(', ')
+    = f.text_field :tag_strings, :value => @post.tag_strings.map {|c| c.name}.join(', '), :id => 'post_tags_string'
   .field
     = f.label :body
-    = f.text_area :body
+    = f.text_area :body, :id => 'post_body'
   .actions = f.submit

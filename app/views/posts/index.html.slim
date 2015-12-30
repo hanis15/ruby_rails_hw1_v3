@@ -1,7 +1,7 @@
-h1 Listing posts
+h1 Posts
 
 - @tags.each do |tag|
-  = link_to "#{tag.name}    ", post_filter_path(tag.name)
+  = link_to "#{tag.name}", post_filter_path(tag.name), :class => "filter-by-tag"
 
 table
   thead
@@ -16,10 +16,10 @@ table
   tbody
     - @posts.each do |post|
       tr id = "post-row-#{post.id}"
-        td.name class="post-author" = post.author
-        td.title class="post-title" = post.title
-        td.body class="post-body" = post.body
-        td.tags class="post-tags" = post.tag_strings.map {|c| c.name}.join(', ')
+        td class="post-author" = post.author
+        td class="post-title" = post.title
+        td class="post-body" = post.body
+        td class="post-tags" = post.tag_strings.map {|c| c.name}.join(', ')
         td = link_to 'Edit', edit_post_path(post)
         td = link_to 'Destroy', post, data: {:confirm => 'Are you sure?'}, :method => :delete
 
