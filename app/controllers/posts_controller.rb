@@ -6,22 +6,27 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     @posts = Post.all.order(updated_at: :desc)
-    @tags = TagString.select('tag_strings.name')
-      .joins(:posts)
-      .group('tag_strings.name')
-      .order('count(tag_strings.name) desc')
+    @tags = TagString
+            .select('tag_strings.name')
+            .joins(:posts)
+            .group('tag_strings.name')
+            .order('count(tag_strings.name) desc')
   end
 
   def filter
-    @post = Post.includes(:tag_strings).where(tag_strings: { name: params[:id] }).order(updated_at: :desc)
+    @post = Post
+            .includes(:tag_strings)
+            .where(tag_strings: { name: params[:id] })
+            .order(updated_at: :desc)
     @posts = []
     @post.each do |posty|
       @posts << Post.find(posty[:id])
     end
-    @tags = TagString.select('tag_strings.name')
-                     .joins(:posts)
-                     .group('tag_strings.name')
-                     .order('count(tag_strings.name) desc')
+    @tags = TagString
+            .select('tag_strings.name')
+            .joins(:posts)
+            .group('tag_strings.name')
+            .order('count(tag_strings.name) desc')
   end
 
   # GET /posts/1
@@ -37,7 +42,7 @@ class PostsController < ApplicationController
   # GET /posts/1/edit
   def edit
     @post = Post.find(params[:id])
-    @tags = @post.tag_strings.map { |c| c.name }.join(', ')
+    @tags = @post.tag_strings.map(&:name).join(', ')
   end
 
   # POST /posts
@@ -50,7 +55,10 @@ class PostsController < ApplicationController
         error_tag(format, 'new', 'tag')
       elsif @post.save
         insert_tags(string_tags)
-        format.html { redirect_to @post, notice: 'Post was successfully created.' }
+        format.html do
+          redirect_to @post,
+                      notice: 'Post was successfully created.'
+        end
         format.json { render :show, status: :created, location: @post }
       else
         error_tag(format, 'new')
@@ -73,7 +81,10 @@ class PostsController < ApplicationController
         @post.tag_strings = TagString.where(name: string_tags)
         @post.touch
         @post.save
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+        format.html do
+          redirect_to @post,
+                      notice: 'Post was successfully updated.'
+        end
         format.json { render :show, status: :ok, location: @post }
       else
         error_tag(format, 'edit')
@@ -90,7 +101,10 @@ class PostsController < ApplicationController
     end
     @post.destroy
     respond_to do |format|
-      format.html { redirect_to posts_url, notice: 'Post was successfully destroyed.' }
+      format.html do
+        redirect_to posts_url,
+                    notice: 'Post was successfully destroyed.'
+      end
       format.json { head :no_content }
     end
   end
@@ -124,7 +138,7 @@ class PostsController < ApplicationController
     is_exist = false
     Post.all.each do |curr_post|
       is_exist = true if curr_post.tag_strings.map(&:id).include?(tag_id) &&
-                      @post[:id] != curr_post[:id]
+                         @post[:id] != curr_post[:id]
     end
     TagString.find(tag_id).destroy unless is_exist
   end
