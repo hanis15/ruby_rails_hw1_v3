@@ -1,7 +1,7 @@
 h1 Listing posts
 
 - @tags.each do |tag|
-  = link_to "#{tag.name}", post_filter_path(tag.name)
+  = link_to "#{tag.name}    ", post_filter_path(tag.name)
 
 table
   thead
